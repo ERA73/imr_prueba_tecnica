@@ -2,10 +2,15 @@ from flask import Flask, render_template
 from flask_mysqldb import MySQL
 
 app = Flask(__name__)
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = 'admin'
+app.config['MYSQL_DB'] = 'parqueadero'
+mysql = MySQL(app)
 
 @app.route('/')
 def index():
-	return "Hola mundo"
+	return render_template("index.html")
 
 if __name__ == '__main__':
 	app.run(port = 3000, debug = True)
