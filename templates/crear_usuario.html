@@ -1,9 +1,14 @@
-<form action="">
-	<input type="number" name="documento">
+<form action="/crear_usuario" method="POST">
+	<label for="">Documento</label>
+	<input type="number" name="documento" placeholder="documento">
 	<br>
-	<input type="text" name="nombres">
+	<label for="">Nombres</label>
+	<input type="text" name="nombres" placeholder="nombres">
 	<br>
-	<input type="text" name="apellidos">
+	<label for="">Apellidos</label>
+	<input type="text" name="apellidos" placeholder="apellidos">
 	<br>
-	<input type="button" name="crear_usuario" value="Crear">
+	<button type="submit" name="crear_usuario">
+		Crear
+	</button>
 </form>

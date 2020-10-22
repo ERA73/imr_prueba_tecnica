@@ -1,0 +1,30 @@
+<div>
+	<input type="radio" name="rb_documento" id="rb_documento" value="documento">
+	<label for="documento">Documento</label>
+	<input type="radio" name="rb_placa" id="rb_placa" value="placa">
+	<label for="placa">Placa</label>
+</div>
+<div>
+	<form action="/buscar_usuario" method="POST">
+		<label for="doc">Documento</label>
+		<input type="text" name="doc" id="documento" placeholder="documento">
+		<button type="submit" name="buscar_usuario">
+			Buscar
+		</button>
+	</form>
+	<div id="lista">
+
+	</div>
+</div>
+<div>
+	<form action="/buscar_vehiculo" method="POST">
+		<label for="pla">Placa</label>
+		<input type="text" name="pla" id="placa" placeholder="placa">
+		<button type="submit" name="buscar_vehiculo">
+			Buscar
+		</button>
+	</form>
+	<div id="vehiculo">
+
+	</div>
+</div>

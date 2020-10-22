@@ -1,0 +1,46 @@
+<label for="">Documento</label>
+<input type="number" name="documento">
+<br>
+<br>
+<div>
+	<input type="radio" name="rb_carro" id="rb_carro" value="carro">
+	<label for="carro">Carro</label>
+	<input type="radio" name="rb_moto" id="rb_moto" value="moto">
+	<label for="moto">Moto</label>
+	<input type="radio" name="rb_bicicleta" id="rb_bicicleta" value="bicicleta">
+	<label for="bicicleta">Bicicleta</label>
+</div>
+<form action="">
+	<div>
+		<label for="">Placa</label>
+		<input type="number" name="placa">
+		<br>
+		<label for="">Modelo</label>
+		<input type="text" name="modelo">
+		<br>
+		<label for=""># Puertas</label>
+		<input type="text" name="puertas">
+	</div>
+	<div>
+		<label for="">Placa</label>
+		<input type="number" name="placa">
+		<br>
+		<label for="">Cilindraje</label>
+		<input type="text" name="cilindraje">
+		<br>
+		<label for="">Tiempos</label>
+		<input type="text" name="tiempos">
+	</div>
+	<div>
+		<label for="img">Foto</label>
+		<input type="file" name="" id="img" name="foto" accept="image/*" onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])">
+		<img id="preview" src="" alt="" width="160" height="90">
+	</div>
+	<br>
+	<br>
+	<div>
+		<button type="submit" name="registrar_vehiculo">
+			Registrar
+		</button>
+	</div>
+</form>
