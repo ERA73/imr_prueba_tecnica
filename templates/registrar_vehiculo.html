@@ -1,19 +1,42 @@
-<label for="">Documento</label>
-<input type="number" name="documento">
-<br>
-<br>
-<div>
-	<input type="radio" name="rb_carro" id="rb_carro" value="carro">
-	<label for="carro">Carro</label>
-	<input type="radio" name="rb_moto" id="rb_moto" value="moto">
-	<label for="moto">Moto</label>
-	<input type="radio" name="rb_bicicleta" id="rb_bicicleta" value="bicicleta">
-	<label for="bicicleta">Bicicleta</label>
-</div>
-<form action="">
+<header>
+	<div>
+		<a href="{{ url_for('index') }}">
+			<img src="static/images/imr_logo.jpg" height="100" alt="100">
+		</a>
+	</div>
+	<nav>
+		<ul>
+			<li><a href="{{ url_for('crear_usuario_form') }}">Crear Usuario</a></li>
+			<li><a href="{{ url_for('registrar_vehiculo_form') }}">Registrar Vehiculo</a></li>
+			<li><a href="{{ url_for('entrada_parqueadero_form') }}">Entrada a parqueadero</a></li>
+		</ul>
+	</nav>
+</header>
+<hr>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+<p>{{ message }}</p>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<form action="/registrar_vehiculo" method="POST">
+	<label for="">Documento</label>
+	<input type="number" name="documento">
+	<br>
+	<br>
+	<div>
+		<input type="radio" name="rb_carro" id="rb_carro" value="carro">
+		<label for="carro">Carro</label>
+		<input type="radio" name="rb_moto" id="rb_moto" value="moto">
+		<label for="moto">Moto</label>
+		<input type="radio" name="rb_bicicleta" id="rb_bicicleta" value="bicicleta">
+		<label for="bicicleta">Bicicleta</label>
+	</div>
 	<div>
 		<label for="">Placa</label>
-		<input type="number" name="placa">
+		<input type="text" name="placa_carro">
 		<br>
 		<label for="">Modelo</label>
 		<input type="text" name="modelo">
@@ -21,9 +44,10 @@
 		<label for=""># Puertas</label>
 		<input type="text" name="puertas">
 	</div>
+	<br>
 	<div>
 		<label for="">Placa</label>
-		<input type="number" name="placa">
+		<input type="text" name="placa_moto">
 		<br>
 		<label for="">Cilindraje</label>
 		<input type="text" name="cilindraje">
@@ -31,9 +55,10 @@
 		<label for="">Tiempos</label>
 		<input type="text" name="tiempos">
 	</div>
+	<br>
 	<div>
 		<label for="img">Foto</label>
-		<input type="file" name="" id="img" name="foto" accept="image/*" onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])">
+		<input type="file" name="foto" id="img" name="foto" accept="image/*" onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])">
 		<img id="preview" src="" alt="" width="160" height="90">
 	</div>
 	<br>

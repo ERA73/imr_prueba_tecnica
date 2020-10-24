@@ -1,30 +1,151 @@
-<div>
+<header>
+	<div>
+		<a href="{{ url_for('index') }}">
+			<img src="static/images/imr_logo.jpg" height="100" alt="100">
+		</a>
+	</div>
+	<nav>
+		<ul>
+			<li><a href="{{ url_for('crear_usuario_form') }}">Crear Usuario</a></li>
+			<li><a href="{{ url_for('registrar_vehiculo_form') }}">Registrar Vehiculo</a></li>
+			<li><a href="{{ url_for('entrada_parqueadero_form') }}">Entrada a parqueadero</a></li>
+		</ul>
+	</nav>
+</header>
+<!-- <div>
 	<input type="radio" name="rb_documento" id="rb_documento" value="documento">
 	<label for="documento">Documento</label>
 	<input type="radio" name="rb_placa" id="rb_placa" value="placa">
 	<label for="placa">Placa</label>
-</div>
+</div> -->
+<hr>
 <div>
 	<form action="/buscar_usuario" method="POST">
-		<label for="doc">Documento</label>
-		<input type="text" name="doc" id="documento" placeholder="documento">
+		<label for="documento">Documento</label>
+		<input type="text" name="documento" id="documento" placeholder="documento">
 		<button type="submit" name="buscar_usuario">
 			Buscar
 		</button>
 	</form>
 	<div id="lista">
-
+		{% if usuario_carros|length >0 %}
+		<table>
+			<thead>
+				<tr>
+					<td>Placa</td>
+					<td>Modelo</td>
+					<td>Puertas</td>
+					<td>Foto</td>
+				</tr>
+			</thead>
+			<tbody>
+				{% for carro in usuario_carros %}
+				<tr>
+					<td>{{ carro.1 }}</td>
+					<td>{{ carro.2 }}</td>
+					<td>{{ carro.3 }}</td>
+					<td>{{ carro.4 }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		{% endif %}
+		{% if usuario_motos|length >0 %}
+		<table>
+			<thead>
+				<tr>
+					<td>Placa</td>
+					<td>Cilindraje</td>
+					<td>Tiempos</td>
+					<td>Foto</td>
+				</tr>
+			</thead>
+			<tbody>
+				{% for moto in usuario_motos %}
+				<tr>
+					<td>{{ moto.1 }}</td>
+					<td>{{ moto.2 }}</td>
+					<td>{{ moto.3 }}</td>
+					<td>{{ moto.4 }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		{% endif %}
+		{% if usuario_bicicletas|length >0 %}
+		<table>
+			<thead>
+				<tr>
+					<td>Numero</td>
+					<td>Foto</td>
+				</tr>
+			</thead>
+			<tbody>
+				{% for bicicleta in usuario_bicicletas %}
+				<tr>
+					<td>{{ bicicleta.0 }}</td>
+					<td>{{ bicicleta.1 }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		{% endif %}
 	</div>
 </div>
+<br>
+<hr>
 <div>
 	<form action="/buscar_vehiculo" method="POST">
-		<label for="pla">Placa</label>
-		<input type="text" name="pla" id="placa" placeholder="placa">
+		<label for="placa">Placa</label>
+		<input type="text" name="placa" id="placa" placeholder="placa">
 		<button type="submit" name="buscar_vehiculo">
 			Buscar
 		</button>
 	</form>
 	<div id="vehiculo">
-
+		{% if placa_carros|length >0 %}
+		<table>
+			<thead>
+				<tr>
+					<td>Placa</td>
+					<td>Modelo</td>
+					<td>Puertas</td>
+					<td>Foto</td>
+				</tr>
+			</thead>
+			<tbody>
+				{% for carro in placa_carros %}
+				<tr>
+					<td>{{ carro.1 }}</td>
+					<td>{{ carro.2 }}</td>
+					<td>{{ carro.3 }}</td>
+					<td>{{ carro.4 }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		{% endif %}
+		{% if placa_motos|length >0 %}
+		<table>
+			<thead>
+				<tr>
+					<td>Placa</td>
+					<td>Cilindraje</td>
+					<td>Tiempos</td>
+					<td>Foto</td>
+				</tr>
+			</thead>
+			<tbody>
+				{% for moto in placa_motos %}
+				<tr>
+					<td>{{ moto.1 }}</td>
+					<td>{{ moto.2 }}</td>
+					<td>{{ moto.3 }}</td>
+					<td>{{ moto.4 }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		{% endif %}
 	</div>
 </div>
