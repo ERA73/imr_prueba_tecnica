@@ -8,7 +8,7 @@
 		<ul>
 			<li><a href="{{ url_for('crear_usuario_form') }}">Crear Usuario</a></li>
 			<li><a href="{{ url_for('registrar_vehiculo_form') }}">Registrar Vehiculo</a></li>
-			<li><a href="{{ url_for('entrada_parqueadero_form') }}">Entrada a parqueadero</a></li>
+			<li><a href="{{ url_for('entrada_parqueadero_form') }}">Entrada y salida del parqueadero</a></li>
 		</ul>
 	</nav>
 </header>
@@ -19,16 +19,24 @@
 	<label for="placa">Placa</label>
 </div> -->
 <hr>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+<h2>{{ message }}</h2>
+{% endfor %}
+{% endif %}
+{% endwith %}
+<hr>
 <div>
 	<form action="/buscar_usuario" method="POST">
 		<label for="documento">Documento</label>
-		<input type="text" name="documento" id="documento" placeholder="documento">
+		<input type="number" name="documento" id="documento" placeholder="documento">
 		<button type="submit" name="buscar_usuario">
 			Buscar
 		</button>
 	</form>
 	<div id="lista">
-		{% if usuario_carros|length >0 %}
+		{% if usuario_carros is defined and usuario_carros.0|length > 0 %}
 		<table>
 			<thead>
 				<tr>
@@ -36,21 +44,29 @@
 					<td>Modelo</td>
 					<td>Puertas</td>
 					<td>Foto</td>
+					<td>Comandos</td>
 				</tr>
 			</thead>
 			<tbody>
-				{% for carro in usuario_carros %}
+				{% for carro in usuario_carros.0 %}
 				<tr>
 					<td>{{ carro.1 }}</td>
 					<td>{{ carro.2 }}</td>
 					<td>{{ carro.3 }}</td>
 					<td>{{ carro.4 }}</td>
+					<td>--{{loop.index-1}}--
+						{% if usuario_carros.1[loop.index-1]|length > 0 and usuario_carros.1[loop.index-1][2] == "" %}
+							<a href="/salida_parqueadero?ve={{carro.0}}&ty=c&cel={{usuario_carros.1[loop.index-1][6]}}" class="salida">Salida</a>
+						{% else %}
+							<a href="/entrada_parqueadero?ve={{carro.0}}&ty=c" class="ingreso">Ingresar</a>
+						{% endif %}
+					</td>
 				</tr>
 				{% endfor %}
 			</tbody>
 		</table>
 		{% endif %}
-		{% if usuario_motos|length >0 %}
+		{% if usuario_motos is defined and usuario_motos.0|length >0 %}
 		<table>
 			<thead>
 				<tr>
@@ -58,33 +74,49 @@
 					<td>Cilindraje</td>
 					<td>Tiempos</td>
 					<td>Foto</td>
+					<td>Comandos</td>
 				</tr>
 			</thead>
 			<tbody>
-				{% for moto in usuario_motos %}
+				{% for moto in usuario_motos.0 %}
 				<tr>
 					<td>{{ moto.1 }}</td>
 					<td>{{ moto.2 }}</td>
 					<td>{{ moto.3 }}</td>
 					<td>{{ moto.4 }}</td>
+					<td>--{{loop.index-1}}--
+						{% if usuario_motos.1[loop.index-1]|length > 0 and usuario_motos.1[loop.index-1][2] == "" %}
+							<a href="/salida_parqueadero?ve={{moto.0}}&ty=m&cel={{usuario_motos.1[loop.index-1][6]}}" class="salida">Salida</a>
+						{% else %}
+							<a href="/entrada_parqueadero?ve={{moto.0}}&ty=m" class="ingreso">Ingresar</a>
+						{% endif %}
+					</td>
 				</tr>
 				{% endfor %}
 			</tbody>
 		</table>
 		{% endif %}
-		{% if usuario_bicicletas|length >0 %}
+		{% if usuario_bicicletas is defined and usuario_bicicletas.0|length >0 %}
 		<table>
 			<thead>
 				<tr>
 					<td>Numero</td>
 					<td>Foto</td>
+					<td>Comandos</td>
 				</tr>
 			</thead>
 			<tbody>
-				{% for bicicleta in usuario_bicicletas %}
+				{% for bicicleta in usuario_bicicletas.0 %}
 				<tr>
 					<td>{{ bicicleta.0 }}</td>
 					<td>{{ bicicleta.1 }}</td>
+					<td>--{{loop.index-1}}--
+						{% if usuario_bicicletas.1[loop.index-1]|length > 0 and usuario_bicicletas.1[loop.index-1][2] == "" %}
+							<a href="/salida_parqueadero?ve={{bicicleta.0}}&ty=b&cel={{usuario_bicicletas.1[loop.index-1][6]}}" class="salida">Salida</a>
+						{% else %}
+							<a href="/entrada_parqueadero?ve={{bicicleta.0}}&ty=b" class="ingreso">Ingresar</a>
+						{% endif %}
+					</td>
 				</tr>
 				{% endfor %}
 			</tbody>
@@ -103,7 +135,7 @@
 		</button>
 	</form>
 	<div id="vehiculo">
-		{% if placa_carros|length >0 %}
+		{% if placa_carros is defined and placa_carros.0|length > 0 %}
 		<table>
 			<thead>
 				<tr>
@@ -111,21 +143,29 @@
 					<td>Modelo</td>
 					<td>Puertas</td>
 					<td>Foto</td>
+					<td>Comandos</td>
 				</tr>
 			</thead>
 			<tbody>
-				{% for carro in placa_carros %}
+				{% for carro in placa_carros.0 %}
 				<tr>
 					<td>{{ carro.1 }}</td>
 					<td>{{ carro.2 }}</td>
 					<td>{{ carro.3 }}</td>
 					<td>{{ carro.4 }}</td>
+					<td>--{{loop.index-1}}--
+						{% if placa_carros.1[loop.index-1]|length > 0 and placa_carros.1[loop.index-1][2] == "" %}
+							<a href="/salida_parqueadero?ve={{carro.0}}&ty=c" class="salida">Salida</a>
+						{% else %}
+							<a href="/entrada_parqueadero?ve={{carro.0}}&ty=c" class="ingreso">Ingresar</a>
+						{% endif %}
+					</td>
 				</tr>
 				{% endfor %}
 			</tbody>
 		</table>
 		{% endif %}
-		{% if placa_motos|length >0 %}
+		{% if placa_motos is defined and placa_motos.0|length > 0 %}
 		<table>
 			<thead>
 				<tr>
@@ -133,15 +173,23 @@
 					<td>Cilindraje</td>
 					<td>Tiempos</td>
 					<td>Foto</td>
+					<td>Comandos</td>
 				</tr>
 			</thead>
 			<tbody>
-				{% for moto in placa_motos %}
+				{% for moto in placa_motos.0 %}
 				<tr>
 					<td>{{ moto.1 }}</td>
 					<td>{{ moto.2 }}</td>
 					<td>{{ moto.3 }}</td>
 					<td>{{ moto.4 }}</td>
+					<td>--{{loop.index-1}}--
+						{% if placa_motos.1[loop.index-1]|length > 0 and placa_motos.1[loop.index-1][2] == "" %}
+							<a href="/salida_parqueadero?ve={{moto.0}}&ty=m" class="salida">Salida</a>
+						{% else %}
+							<a href="/entrada_parqueadero?ve={{moto.0}}&ty=m" class="ingreso">Ingresar</a>
+						{% endif %}
+					</td>
 				</tr>
 				{% endfor %}
 			</tbody>

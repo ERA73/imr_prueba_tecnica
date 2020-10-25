@@ -1,10 +1,3 @@
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-{% for message in messages %}
-<p>{{ message }}</p>
-{% endfor %}
-{% endif %}
-{% endwith %}
 <header>
 	<div>
 		<a href="{{ url_for('index') }}">
@@ -15,10 +8,18 @@
 		<ul>
 			<li><a href="{{ url_for('crear_usuario_form') }}">Crear Usuario</a></li>
 			<li><a href="{{ url_for('registrar_vehiculo_form') }}">Registrar Vehiculo</a></li>
-			<li><a href="{{ url_for('entrada_parqueadero_form') }}">Entrada a parqueadero</a></li>
+			<li><a href="{{ url_for('entrada_parqueadero_form') }}">Entrada y salida del parqueadero</a></li>
 		</ul>
 	</nav>
 </header>
+<hr>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+<p>{{ message }}</p>
+{% endfor %}
+{% endif %}
+{% endwith %}
 <hr>
 <form action="/crear_usuario" method="POST">
 	<label for="">Documento</label>

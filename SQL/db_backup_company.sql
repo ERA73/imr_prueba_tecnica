@@ -23,13 +23,13 @@ DROP TABLE IF EXISTS `bicicleta`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `bicicleta` (
-  `id_bicicleta` int(11) NOT NULL,
+  `id_bicicleta` int(11) NOT NULL AUTO_INCREMENT,
   `foto` longtext COLLATE utf8_unicode_ci DEFAULT NULL,
   `us_documento` int(11) NOT NULL,
   PRIMARY KEY (`id_bicicleta`),
   KEY `FK_bicicleta_usuario` (`us_documento`),
   CONSTRAINT `FK_bicicleta_usuario` FOREIGN KEY (`us_documento`) REFERENCES `usuario` (`documento`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,6 +38,7 @@ CREATE TABLE `bicicleta` (
 
 LOCK TABLES `bicicleta` WRITE;
 /*!40000 ALTER TABLE `bicicleta` DISABLE KEYS */;
+INSERT INTO `bicicleta` VALUES (1,'',1231231231),(2,'',1231231231),(3,'',1231231233),(4,'',1231231233);
 /*!40000 ALTER TABLE `bicicleta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -49,7 +50,7 @@ DROP TABLE IF EXISTS `carro`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `carro` (
-  `id_carro` int(11) NOT NULL,
+  `id_carro` int(11) NOT NULL AUTO_INCREMENT,
   `placa` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `modelo` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `puertas` int(11) NOT NULL,
@@ -58,7 +59,7 @@ CREATE TABLE `carro` (
   PRIMARY KEY (`id_carro`),
   KEY `FK_carro_usuario` (`us_documento`),
   CONSTRAINT `FK_carro_usuario` FOREIGN KEY (`us_documento`) REFERENCES `usuario` (`documento`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -67,6 +68,7 @@ CREATE TABLE `carro` (
 
 LOCK TABLES `carro` WRITE;
 /*!40000 ALTER TABLE `carro` DISABLE KEYS */;
+INSERT INTO `carro` VALUES (2,'asd123','2019',4,'',1231231231),(3,'qwe123','2010',2,'',1231231231),(4,'iop123','2016',4,'',1231231233),(5,'jkl123','1998',2,'',1231231233);
 /*!40000 ALTER TABLE `carro` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -83,7 +85,7 @@ CREATE TABLE `celda` (
   `tipo` set('carro','moto','bicicleta') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'carro',
   `estado` set('libre','ocupado') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'libre',
   PRIMARY KEY (`id_celda`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -92,6 +94,7 @@ CREATE TABLE `celda` (
 
 LOCK TABLES `celda` WRITE;
 /*!40000 ALTER TABLE `celda` DISABLE KEYS */;
+INSERT INTO `celda` VALUES (28,1,'carro','libre'),(29,2,'carro','libre'),(30,3,'carro','libre'),(31,4,'carro','libre'),(32,5,'carro','libre'),(33,6,'carro','libre'),(34,7,'carro','libre'),(35,8,'carro','libre'),(36,9,'carro','libre'),(37,10,'carro','libre'),(38,1,'moto','libre'),(39,2,'moto','libre'),(40,3,'moto','libre'),(41,4,'moto','libre'),(42,5,'moto','libre'),(43,6,'moto','libre'),(44,7,'moto','libre'),(45,8,'moto','libre'),(46,9,'moto','libre'),(47,10,'moto','libre'),(48,1,'bicicleta','libre'),(49,2,'bicicleta','libre'),(50,3,'bicicleta','libre'),(51,4,'bicicleta','libre'),(52,5,'bicicleta','libre'),(53,6,'bicicleta','libre'),(54,7,'bicicleta','libre'),(55,8,'bicicleta','libre'),(56,9,'bicicleta','libre'),(57,10,'bicicleta','libre');
 /*!40000 ALTER TABLE `celda` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -104,7 +107,8 @@ DROP TABLE IF EXISTS `entrada`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `entrada` (
   `consecutivo` int(11) NOT NULL AUTO_INCREMENT,
-  `fecha` datetime NOT NULL DEFAULT current_timestamp(),
+  `fecha_entrada` datetime NOT NULL DEFAULT current_timestamp(),
+  `fecha_salida` datetime DEFAULT NULL,
   `id_carro` int(11) DEFAULT NULL,
   `id_moto` int(11) DEFAULT NULL,
   `id_bicicleta` int(11) DEFAULT NULL,
@@ -118,7 +122,7 @@ CREATE TABLE `entrada` (
   CONSTRAINT `FK_entrada_carro` FOREIGN KEY (`id_carro`) REFERENCES `carro` (`id_carro`),
   CONSTRAINT `FK_entrada_celda` FOREIGN KEY (`id_celda`) REFERENCES `celda` (`id_celda`),
   CONSTRAINT `FK_entrada_moto` FOREIGN KEY (`id_moto`) REFERENCES `moto` (`id_moto`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -138,7 +142,7 @@ DROP TABLE IF EXISTS `moto`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `moto` (
-  `id_moto` int(11) NOT NULL,
+  `id_moto` int(11) NOT NULL AUTO_INCREMENT,
   `placa` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `cilindraje` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `tiempos` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
@@ -147,7 +151,7 @@ CREATE TABLE `moto` (
   PRIMARY KEY (`id_moto`),
   KEY `FK_moto_usuario` (`us_documento`),
   CONSTRAINT `FK_moto_usuario` FOREIGN KEY (`us_documento`) REFERENCES `usuario` (`documento`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -156,6 +160,7 @@ CREATE TABLE `moto` (
 
 LOCK TABLES `moto` WRITE;
 /*!40000 ALTER TABLE `moto` DISABLE KEYS */;
+INSERT INTO `moto` VALUES (1,'zxc123','125','4','',1231231231),(2,'rty123','200','4','',1231231231),(3,'fgh123','150','4','',1231231233),(4,'bnm123','175','2','',1231231233);
 /*!40000 ALTER TABLE `moto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -180,6 +185,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
+INSERT INTO `usuario` VALUES (1231231231,'juan','peres'),(1231231233,'diana','gomez');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -200,4 +206,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-10-20 20:00:20
+-- Dump completed on 2020-10-25  1:57:53
