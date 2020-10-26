@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_mysqldb import MySQL
+from datetime import datetime
+from dao import *
 import traceback
 
 app = Flask(__name__)
@@ -33,6 +35,8 @@ def enrutar():
 				return redirect(url_for('registrar_vehiculo_form'))
 			elif "entrada_parqueadero" in request.form.keys():
 				return redirect(url_for('entrada_parqueadero_form'))
+			elif "informes" in request.form.keys():
+				return redirect(url_for('informes'))
 	except:
 		traceback.print_exc()
 		return "<p>Error inesperado, sentimos las molestias</p>"
@@ -60,6 +64,83 @@ def registrar_vehiculo_form():
 def entrada_parqueadero_form():
 	try:
 		return render_template("entrada_parqueadero.html")
+	except:
+		traceback.print_exc()
+		return "<p>Error inesperado, sentimos las molestias</p>"
+
+def get_fecha():
+	today = datetime.today()
+	years = [2000, today.year]
+	months = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"]
+	return [years, months]
+
+@app.route('/informes_form')
+def informes_form():
+	try:
+		fecha = get_fecha()
+		return render_template("informes.html", years = fecha[0], months = fecha[1])
+	except:
+		traceback.print_exc()
+		return "<p>Error inesperado, sentimos las molestias</p>"
+
+def get_documentos(documento = ""):
+	try:
+		filtro_documento = "" if documento == "" else "AND documento = {}".format(documento)
+		cur = mysql.connection.cursor()
+		cur.execute("""
+		SELECT * FROM usuario 
+		WHERE documento IN 
+		(SELECT us_documento FROM carro
+		UNION
+		SELECT us_documento FROM moto
+		UNION
+		SELECT us_documento FROM bicicleta)
+		{}
+		""".format(filtro_documento))
+		documentos = list(cur.fetchall())
+		return documentos
+	except:
+		return []
+
+@app.route('/generar_informe', methods = ['POST'])
+def generar_informe():
+	try:
+		if request.method == 'POST':
+			consultas = dao()
+			fecha = get_fecha()
+			documento = request.form['documento']
+			year = request.form['year']
+			month = request.form['month']
+			if documento == "":
+				documentos = get_documentos()
+			else:
+				documentos = get_documentos(documento)
+			cur = mysql.connection.cursor()
+			data_info = []
+			for doc in documentos:
+				cur.execute(consultas.get_consulta_parqueo_carro(year, month, doc[0]))
+				data_carro = list(cur.fetchall())
+				print(data_carro)
+				data_carro = len(data_carro)
+				cur.execute(consultas.get_consulta_parqueo_moto(year, month, doc[0]))
+				data_moto = list(cur.fetchall())
+				print(data_moto)
+				data_moto = len(data_moto)
+				cur.execute(consultas.get_consulta_parqueo_bicicleta(year, month, doc[0]))
+				data_bicicleta = list(cur.fetchall())
+				print(data_bicicleta)
+				data_bicicleta = len(data_bicicleta)
+				cur.execute(consultas.get_consulta_parqueo_total(year, month, doc[0]))
+				data_total = list(cur.fetchall())
+				data_total = len(data_total)
+
+				if data_total == 0:
+					continue
+				nombre = "{} {}".format(doc[1], doc[2])
+				data_info.append([doc[0], nombre, data_carro, data_moto, data_bicicleta, data_total])
+			if len(data_info) == 0:
+				flash('No hay resultados para mostrar')
+			return render_template("informes.html", years = fecha[0], months = fecha[1], data_info = data_info)
 	except:
 		traceback.print_exc()
 		return "<p>Error inesperado, sentimos las molestias</p>"

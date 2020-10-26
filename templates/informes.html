@@ -1,0 +1,48 @@
+{% extends 'plantilla.html' %}
+
+{% block body %}
+<h2>Informes</h2>
+<form action="/generar_informe" method="POST" id="informe">
+	<label for="">Documento</label>
+	<input type="number" name="documento">
+	<label for="year">Seleccione el año:</label>
+	<input type="number" id="year" name="year" min="{{ years.0 }}" max="{{ years.1 }}" class="form-control"><br><br>
+	<label for="year">Seleccione el mes:</label>
+</form>
+<select id="month" name="month" class="form-control" form="informe">
+	{% for month in months %}
+	<option value="{{ loop.index }}">{{ month }}</option>
+	{% endfor %}
+</select>
+<br>
+<button type="submit" name="generar_informe" class="btn btn-success" form="informe">
+	Generar Informe
+</button>
+
+{% if data_info is defined and data_info|length > 0 %}
+<h3>Informe</h3>
+<table class="table table-hover">
+	<thead>
+		<tr>
+			<th>Documento</th>
+			<th>Nombre</th>
+			<th>Días de uso del parqueadero</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for info in data_info %}
+		<tr>
+			<td>{{ info.0 }}</td>
+			<td>{{ info.1 }}</td>
+			<td>
+				<a class="btn btn-secondary"> Carro: {{ info.2 }}</a>
+				<a class="btn btn-secondary"> Moto: {{ info.3 }}</a>
+				<a class="btn btn-secondary"> Bicicleta: {{ info.4 }}</a>
+				<a class="btn btn-secondary"> TOTAL días: {{ info.5 }}</a>
+			</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endif %}
+{% endblock %}

@@ -94,7 +94,7 @@ CREATE TABLE `celda` (
 
 LOCK TABLES `celda` WRITE;
 /*!40000 ALTER TABLE `celda` DISABLE KEYS */;
-INSERT INTO `celda` VALUES (28,1,'carro','libre'),(29,2,'carro','libre'),(30,3,'carro','libre'),(31,4,'carro','libre'),(32,5,'carro','libre'),(33,6,'carro','libre'),(34,7,'carro','libre'),(35,8,'carro','libre'),(36,9,'carro','libre'),(37,10,'carro','libre'),(38,1,'moto','libre'),(39,2,'moto','libre'),(40,3,'moto','libre'),(41,4,'moto','libre'),(42,5,'moto','libre'),(43,6,'moto','libre'),(44,7,'moto','libre'),(45,8,'moto','libre'),(46,9,'moto','libre'),(47,10,'moto','libre'),(48,1,'bicicleta','libre'),(49,2,'bicicleta','libre'),(50,3,'bicicleta','libre'),(51,4,'bicicleta','libre'),(52,5,'bicicleta','libre'),(53,6,'bicicleta','libre'),(54,7,'bicicleta','libre'),(55,8,'bicicleta','libre'),(56,9,'bicicleta','libre'),(57,10,'bicicleta','libre');
+INSERT INTO `celda` VALUES (28,1,'carro','ocupado'),(29,2,'carro','ocupado'),(30,3,'carro','libre'),(31,4,'carro','libre'),(32,5,'carro','libre'),(33,6,'carro','libre'),(34,7,'carro','libre'),(35,8,'carro','libre'),(36,9,'carro','libre'),(37,10,'carro','libre'),(38,1,'moto','libre'),(39,2,'moto','libre'),(40,3,'moto','libre'),(41,4,'moto','libre'),(42,5,'moto','libre'),(43,6,'moto','libre'),(44,7,'moto','libre'),(45,8,'moto','libre'),(46,9,'moto','libre'),(47,10,'moto','libre'),(48,1,'bicicleta','libre'),(49,2,'bicicleta','libre'),(50,3,'bicicleta','libre'),(51,4,'bicicleta','libre'),(52,5,'bicicleta','libre'),(53,6,'bicicleta','libre'),(54,7,'bicicleta','libre'),(55,8,'bicicleta','libre'),(56,9,'bicicleta','libre'),(57,10,'bicicleta','libre');
 /*!40000 ALTER TABLE `celda` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -122,7 +122,7 @@ CREATE TABLE `entrada` (
   CONSTRAINT `FK_entrada_carro` FOREIGN KEY (`id_carro`) REFERENCES `carro` (`id_carro`),
   CONSTRAINT `FK_entrada_celda` FOREIGN KEY (`id_celda`) REFERENCES `celda` (`id_celda`),
   CONSTRAINT `FK_entrada_moto` FOREIGN KEY (`id_moto`) REFERENCES `moto` (`id_moto`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -131,6 +131,7 @@ CREATE TABLE `entrada` (
 
 LOCK TABLES `entrada` WRITE;
 /*!40000 ALTER TABLE `entrada` DISABLE KEYS */;
+INSERT INTO `entrada` VALUES (7,'2020-10-25 15:20:24','2020-10-25 15:55:18',2,NULL,NULL,28),(8,'2020-10-25 16:20:34','2020-10-25 16:20:53',NULL,NULL,1,48),(9,'2020-10-26 13:52:16','2020-10-26 13:52:38',3,NULL,NULL,28),(10,'2020-10-26 13:53:01',NULL,3,NULL,NULL,28),(11,'2020-10-26 15:35:07',NULL,4,NULL,NULL,29);
 /*!40000 ALTER TABLE `entrada` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -206,4 +207,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-10-25  1:57:53
+-- Dump completed on 2020-10-26 15:58:48

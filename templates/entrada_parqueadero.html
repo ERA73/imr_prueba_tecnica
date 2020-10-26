@@ -1,17 +1,7 @@
-<header>
-	<div>
-		<a href="{{ url_for('index') }}">
-			<img src="static/images/imr_logo.jpg" height="100" alt="100">
-		</a>
-	</div>
-	<nav>
-		<ul>
-			<li><a href="{{ url_for('crear_usuario_form') }}">Crear Usuario</a></li>
-			<li><a href="{{ url_for('registrar_vehiculo_form') }}">Registrar Vehiculo</a></li>
-			<li><a href="{{ url_for('entrada_parqueadero_form') }}">Entrada y salida del parqueadero</a></li>
-		</ul>
-	</nav>
-</header>
+{% extends 'plantilla.html' %}
+
+{% block body %}
+<h2>Entrada y Salida del Parqueadero</h2>
 <!-- <div>
 	<input type="radio" name="rb_documento" id="rb_documento" value="documento">
 	<label for="documento">Documento</label>
@@ -19,13 +9,7 @@
 	<label for="placa">Placa</label>
 </div> -->
 <hr>
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-{% for message in messages %}
-<h2>{{ message }}</h2>
-{% endfor %}
-{% endif %}
-{% endwith %}
+
 <hr>
 <div>
 	<form action="/buscar_usuario" method="POST">
@@ -37,14 +21,15 @@
 	</form>
 	<div id="lista">
 		{% if usuario_carros is defined and usuario_carros.0|length > 0 %}
-		<table>
+		<h3>Carros</h3>
+		<table class="table table-hover">
 			<thead>
 				<tr>
-					<td>Placa</td>
-					<td>Modelo</td>
-					<td>Puertas</td>
-					<td>Foto</td>
-					<td>Comandos</td>
+					<th>Placa</th>
+					<th>Modelo</th>
+					<th>Puertas</th>
+					<th>Foto</th>
+					<th>Comandos</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -56,9 +41,9 @@
 					<td>{{ carro.4 }}</td>
 					<td>--{{loop.index-1}}--
 						{% if usuario_carros.1[loop.index-1]|length > 0 and usuario_carros.1[loop.index-1][2] == "" %}
-							<a href="/salida_parqueadero?ve={{carro.0}}&ty=c&cel={{usuario_carros.1[loop.index-1][6]}}" class="salida">Salida</a>
+							<a href="/salida_parqueadero?ve={{carro.0}}&ty=c&cel={{usuario_carros.1[loop.index-1][6]}}" class="btn btn-warning">Salida</a>
 						{% else %}
-							<a href="/entrada_parqueadero?ve={{carro.0}}&ty=c" class="ingreso">Ingresar</a>
+							<a href="/entrada_parqueadero?ve={{carro.0}}&ty=c" class="btn btn-primary">Ingresar</a>
 						{% endif %}
 					</td>
 				</tr>
@@ -67,14 +52,15 @@
 		</table>
 		{% endif %}
 		{% if usuario_motos is defined and usuario_motos.0|length >0 %}
-		<table>
+		<h3>Motos</h3>
+		<table class="table table-hover">
 			<thead>
 				<tr>
-					<td>Placa</td>
-					<td>Cilindraje</td>
-					<td>Tiempos</td>
-					<td>Foto</td>
-					<td>Comandos</td>
+					<th>Placa</th>
+					<th>Cilindraje</th>
+					<th>Tiempos</th>
+					<th>Foto</th>
+					<th>Comandos</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -86,9 +72,9 @@
 					<td>{{ moto.4 }}</td>
 					<td>--{{loop.index-1}}--
 						{% if usuario_motos.1[loop.index-1]|length > 0 and usuario_motos.1[loop.index-1][2] == "" %}
-							<a href="/salida_parqueadero?ve={{moto.0}}&ty=m&cel={{usuario_motos.1[loop.index-1][6]}}" class="salida">Salida</a>
+							<a href="/salida_parqueadero?ve={{moto.0}}&ty=m&cel={{usuario_motos.1[loop.index-1][6]}}" class="btn btn-warning">Salida</a>
 						{% else %}
-							<a href="/entrada_parqueadero?ve={{moto.0}}&ty=m" class="ingreso">Ingresar</a>
+							<a href="/entrada_parqueadero?ve={{moto.0}}&ty=m" class="btn btn-primary">Ingresar</a>
 						{% endif %}
 					</td>
 				</tr>
@@ -97,12 +83,13 @@
 		</table>
 		{% endif %}
 		{% if usuario_bicicletas is defined and usuario_bicicletas.0|length >0 %}
-		<table>
+		<h3>Bicicletas</h3>
+		<table class="table table-hover">
 			<thead>
 				<tr>
-					<td>Numero</td>
-					<td>Foto</td>
-					<td>Comandos</td>
+					<th>Numero</th>
+					<th>Foto</th>
+					<th>Comandos</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -112,9 +99,9 @@
 					<td>{{ bicicleta.1 }}</td>
 					<td>--{{loop.index-1}}--
 						{% if usuario_bicicletas.1[loop.index-1]|length > 0 and usuario_bicicletas.1[loop.index-1][2] == "" %}
-							<a href="/salida_parqueadero?ve={{bicicleta.0}}&ty=b&cel={{usuario_bicicletas.1[loop.index-1][6]}}" class="salida">Salida</a>
+							<a href="/salida_parqueadero?ve={{bicicleta.0}}&ty=b&cel={{usuario_bicicletas.1[loop.index-1][6]}}" class="btn btn-warning">Salida</a>
 						{% else %}
-							<a href="/entrada_parqueadero?ve={{bicicleta.0}}&ty=b" class="ingreso">Ingresar</a>
+							<a href="/entrada_parqueadero?ve={{bicicleta.0}}&ty=b" class="btn btn-primary">Ingresar</a>
 						{% endif %}
 					</td>
 				</tr>
@@ -136,14 +123,15 @@
 	</form>
 	<div id="vehiculo">
 		{% if placa_carros is defined and placa_carros.0|length > 0 %}
-		<table>
+		<h3>Carro</h3>
+		<table class="table table-hover">
 			<thead>
 				<tr>
-					<td>Placa</td>
-					<td>Modelo</td>
-					<td>Puertas</td>
-					<td>Foto</td>
-					<td>Comandos</td>
+					<th>Placa</th>
+					<th>Modelo</th>
+					<th>Puertas</th>
+					<th>Foto</th>
+					<th>Comandos</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -155,9 +143,9 @@
 					<td>{{ carro.4 }}</td>
 					<td>--{{loop.index-1}}--
 						{% if placa_carros.1[loop.index-1]|length > 0 and placa_carros.1[loop.index-1][2] == "" %}
-							<a href="/salida_parqueadero?ve={{carro.0}}&ty=c" class="salida">Salida</a>
+							<a href="/salida_parqueadero?ve={{carro.0}}&ty=c" class="btn btn-warning">Salida</a>
 						{% else %}
-							<a href="/entrada_parqueadero?ve={{carro.0}}&ty=c" class="ingreso">Ingresar</a>
+							<a href="/entrada_parqueadero?ve={{carro.0}}&ty=c" class="btn btn-primary">Ingresar</a>
 						{% endif %}
 					</td>
 				</tr>
@@ -166,14 +154,15 @@
 		</table>
 		{% endif %}
 		{% if placa_motos is defined and placa_motos.0|length > 0 %}
-		<table>
+		<h3>Moto</h3>
+		<table class="table table-hover">
 			<thead>
 				<tr>
-					<td>Placa</td>
-					<td>Cilindraje</td>
-					<td>Tiempos</td>
-					<td>Foto</td>
-					<td>Comandos</td>
+					<th>Placa</th>
+					<th>Cilindraje</th>
+					<th>Tiempos</th>
+					<th>Foto</th>
+					<th>Comandos</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -185,9 +174,9 @@
 					<td>{{ moto.4 }}</td>
 					<td>--{{loop.index-1}}--
 						{% if placa_motos.1[loop.index-1]|length > 0 and placa_motos.1[loop.index-1][2] == "" %}
-							<a href="/salida_parqueadero?ve={{moto.0}}&ty=m" class="salida">Salida</a>
+							<a href="/salida_parqueadero?ve={{moto.0}}&ty=m" class="btn btn-warning">Salida</a>
 						{% else %}
-							<a href="/entrada_parqueadero?ve={{moto.0}}&ty=m" class="ingreso">Ingresar</a>
+							<a href="/entrada_parqueadero?ve={{moto.0}}&ty=m" class="btn btn-primary">Ingresar</a>
 						{% endif %}
 					</td>
 				</tr>
@@ -197,3 +186,4 @@
 		{% endif %}
 	</div>
 </div>
+{% endblock %}
