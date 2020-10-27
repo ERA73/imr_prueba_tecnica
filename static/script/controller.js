@@ -10,7 +10,7 @@ function show_bicicleta(){
 	document.getElementById('panel_carro').style.display ='none';
 	document.getElementById('panel_moto').style.display ='none';
 }
-function myload() { 
+window.onload = function() { 
 	if(document.getElementById('rb_carro').checked){
 		console.log("rb_carro");
 		show_carro();

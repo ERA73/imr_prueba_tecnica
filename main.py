@@ -5,10 +5,11 @@ from dao import *
 import traceback
 import base64
 
-UPLOAD_FOLDER = '/uploadedfiles/images'
+#UPLOAD_FOLDER = '/uploadedfiles/images'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 app = Flask(__name__)
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 # MySQL connection
 app.config['MYSQL_HOST'] = 'localhost'
@@ -18,7 +19,7 @@ app.config['MYSQL_DB'] = 'parqueadero'
 mysql = MySQL(app)
 
 # Archivos
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+#app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 #settings
 app.secret_key = "mysecretkey"
@@ -190,27 +191,38 @@ def crear_usuario():
 def registrar_vehiculo():
 	try:
 		if request.method == 'POST':
-			placa_carro = request.form['placa_carro']
-			modelo = request.form['modelo']
-			puertas = request.form['puertas']
+			documento = request.form['documento']
+			option = request.form['rb_vehiculo']
 			
-			placa_moto = request.form['placa_moto']
-			cilindraje = request.form['cilindraje']
-			tiempos = request.form['tiempos']
+			if documento == "":
+				flash('Debe escribir el documento')
+				return redirect(url_for('registrar_vehiculo_form'))
+
 			#if 'foto' not in request.files:
 			#	flash('no se puede cargar el archibo')
 			#	return redirect(request.url)
 			foto = ""#request.files['foto']
-			documento = request.form['documento']
 			print(type(foto))
 			print(foto)
 			#print(base64.b64encode(foto))
 			cur = mysql.connection.cursor()
-			if placa_carro != "":
+			if option == "carro":
+				placa_carro = request.form['placa_carro']
+				modelo = request.form['modelo']
+				puertas = request.form['puertas']
+				if placa_carro == "" or modelo == "" or puertas == "":
+					flash('Debe completar los datos del carro')
+					return render_template("registrar_vehiculo.html", placa_vehiculo = "", check_carro = "checked", check_moto = "", check_bicicleta = "")
 				cur.execute("INSERT INTO carro (placa, modelo, puertas, foto, us_documento) VALUES (\"{}\",\"{}\",{},\"{}\",{})".format(placa_carro, modelo, puertas, foto, documento))
 				mysql.connection.commit()
 				flash('Carro agregado correctamente')
-			elif placa_moto != "":
+			elif option == "moto":
+				placa_moto = request.form['placa_moto']
+				cilindraje = request.form['cilindraje']
+				tiempos = request.form['tiempos']
+				if placa_moto == "" or cilindraje == "" or tiempos == "":
+					flash('Debe completar los datos de la moto')
+					return render_template("registrar_vehiculo.html", placa_vehiculo = "", check_carro = "", check_moto = "checked", check_bicicleta = "")
 				cur.execute("INSERT INTO moto (placa, cilindraje, tiempos, foto, us_documento) VALUES (\"{}\",\"{}\",\"{}\",\"{}\",{})".format(placa_moto, cilindraje, tiempos, foto, documento))
 				mysql.connection.commit()
 				flash('Moto agregada correctamente')
@@ -231,6 +243,7 @@ def buscar_usuario():
 			if "buscar_usuario" in request.form.keys():
 				documento = request.form['documento']
 				if documento == "":
+					flash('Debe escribir el documento')
 					return redirect(url_for("entrada_parqueadero_form"))
 				#obtener carros del usuario
 				cur.execute('SELECT * FROM carro WHERE us_documento = {}'.format(documento))
@@ -264,6 +277,7 @@ def buscar_vehiculo():
 			if "buscar_vehiculo" in request.form.keys():
 				placa = request.form['placa']
 				if placa == "":
+					flash('Debe escribir una placa')
 					return redirect(url_for("entrada_parqueadero_form"))
 				#obtener carros del usuario
 				cur.execute('SELECT * FROM carro WHERE placa = \"{}\"'.format(placa))
@@ -373,4 +387,4 @@ def datos_parqueadero(tipo, id):
 		return []
 
 if __name__ == '__main__':
-	app.run(port = 3000, debug = True)
+	app.run(host="localhost" ,port = 3000, debug = True)
