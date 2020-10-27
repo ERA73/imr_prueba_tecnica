@@ -293,6 +293,7 @@ def buscar_vehiculo():
 					ingreso_motos.append(datos_parqueadero("moto", data_moto[0]))
 				
 				if len(data_carros) == 0 and len(data_motos) == 0:
+					flash('El vehiculo no esta registrado, por favor registrelo')
 					return render_template("registrar_vehiculo.html", placa_vehiculo = placa, check_carro = "checked", check_moto = "", check_bicicleta = "")
 
 				if len(data_carros) > 0:

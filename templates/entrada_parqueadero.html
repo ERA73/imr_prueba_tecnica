@@ -143,7 +143,7 @@
 					<td>{{ carro.4 }}</td>
 					<td>
 						{% if placa_carros.1[loop.index-1]|length > 0 and placa_carros.1[loop.index-1][2] == "" %}
-							<a href="/salida_parqueadero?ve={{carro.0}}&ty=c" class="btn btn-warning">Salida</a>
+							<a href="/salida_parqueadero?ve={{carro.0}}&ty=c&cel={{placa_carros.1[loop.index-1][6]}}" class="btn btn-warning">Salida</a>
 						{% else %}
 							<a href="/entrada_parqueadero?ve={{carro.0}}&ty=c" class="btn btn-primary">Ingresar</a>
 						{% endif %}
@@ -174,7 +174,7 @@
 					<td>{{ moto.4 }}</td>
 					<td>
 						{% if placa_motos.1[loop.index-1]|length > 0 and placa_motos.1[loop.index-1][2] == "" %}
-							<a href="/salida_parqueadero?ve={{moto.0}}&ty=m" class="btn btn-warning">Salida</a>
+							<a href="/salida_parqueadero?ve={{moto.0}}&ty=m&cel={{placa_motos.1[loop.index-1][6]}}" class="btn btn-warning">Salida</a>
 						{% else %}
 							<a href="/entrada_parqueadero?ve={{moto.0}}&ty=m" class="btn btn-primary">Ingresar</a>
 						{% endif %}
