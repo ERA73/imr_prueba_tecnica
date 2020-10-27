@@ -3,6 +3,10 @@ from flask_mysqldb import MySQL
 from datetime import datetime
 from dao import *
 import traceback
+import base64
+
+UPLOAD_FOLDER = '/uploadedfiles/images'
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 app = Flask(__name__)
 
@@ -13,13 +17,28 @@ app.config['MYSQL_PASSWORD'] = 'admin'
 app.config['MYSQL_DB'] = 'parqueadero'
 mysql = MySQL(app)
 
+# Archivos
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 #settings
 app.secret_key = "mysecretkey"
+
+def allowed_file(filename):
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route('/')
+def defaul():
+	try:
+		return render_template("index.html")
+	except:
+		traceback.print_exc()
+		return "<p>Error inesperado, sentimos las molestias</p>"
 
 @app.route('/index')
 def index():
 	try:
-		return render_template("index.html")
+		return redirect(url_for('defaul'))
 	except:
 		traceback.print_exc()
 		return "<p>Error inesperado, sentimos las molestias</p>"
@@ -36,7 +55,7 @@ def enrutar():
 			elif "entrada_parqueadero" in request.form.keys():
 				return redirect(url_for('entrada_parqueadero_form'))
 			elif "informes" in request.form.keys():
-				return redirect(url_for('informes'))
+				return redirect(url_for('informes_form'))
 	except:
 		traceback.print_exc()
 		return "<p>Error inesperado, sentimos las molestias</p>"
@@ -55,7 +74,7 @@ def crear_usuario_form():
 @app.route('/registrar_vehiculo_form')
 def registrar_vehiculo_form():
 	try:
-		return render_template("registrar_vehiculo.html")
+		return render_template("registrar_vehiculo.html", placa_vehiculo = "", check_carro = "", check_moto = "", check_bicicleta = "checked")
 	except:
 		traceback.print_exc()
 		return "<p>Error inesperado, sentimos las molestias</p>"
@@ -111,6 +130,9 @@ def generar_informe():
 			documento = request.form['documento']
 			year = request.form['year']
 			month = request.form['month']
+			if year == "":
+				flash('Debe escribir un año')
+				return redirect(url_for('informes_form'))
 			if documento == "":
 				documentos = get_documentos()
 			else:
@@ -152,6 +174,9 @@ def crear_usuario():
 			documento = request.form['documento']
 			nombres = request.form['nombres']
 			apellidos = request.form['apellidos']
+			if documento == "" or nombres == "" or apellidos == "":
+				flash('Debe llenar todos los campos')
+				return redirect(url_for('crear_usuario_form'))
 			cur = mysql.connection.cursor()
 			cur.execute("INSERT INTO usuario (documento, nombres, apellidos) VALUES ({},\"{}\",\"{}\")".format(documento, nombres, apellidos))
 			mysql.connection.commit()
@@ -172,12 +197,14 @@ def registrar_vehiculo():
 			placa_moto = request.form['placa_moto']
 			cilindraje = request.form['cilindraje']
 			tiempos = request.form['tiempos']
-
-			foto = ""#request.form['foto']
+			#if 'foto' not in request.files:
+			#	flash('no se puede cargar el archibo')
+			#	return redirect(request.url)
+			foto = ""#request.files['foto']
 			documento = request.form['documento']
-			print(documento)
-			print(placa_carro)
-			print(modelo)
+			print(type(foto))
+			print(foto)
+			#print(base64.b64encode(foto))
 			cur = mysql.connection.cursor()
 			if placa_carro != "":
 				cur.execute("INSERT INTO carro (placa, modelo, puertas, foto, us_documento) VALUES (\"{}\",\"{}\",{},\"{}\",{})".format(placa_carro, modelo, puertas, foto, documento))
@@ -203,6 +230,8 @@ def buscar_usuario():
 			cur = mysql.connection.cursor()
 			if "buscar_usuario" in request.form.keys():
 				documento = request.form['documento']
+				if documento == "":
+					return redirect(url_for("entrada_parqueadero_form"))
 				#obtener carros del usuario
 				cur.execute('SELECT * FROM carro WHERE us_documento = {}'.format(documento))
 				data_carros = cur.fetchall()
@@ -234,6 +263,8 @@ def buscar_vehiculo():
 			cur = mysql.connection.cursor()
 			if "buscar_vehiculo" in request.form.keys():
 				placa = request.form['placa']
+				if placa == "":
+					return redirect(url_for("entrada_parqueadero_form"))
 				#obtener carros del usuario
 				cur.execute('SELECT * FROM carro WHERE placa = \"{}\"'.format(placa))
 				data_carros = cur.fetchall()
@@ -246,6 +277,9 @@ def buscar_vehiculo():
 				ingreso_motos = []
 				for data_moto in data_motos:
 					ingreso_motos.append(datos_parqueadero("moto", data_moto[0]))
+				
+				if len(data_carros) == 0 and len(data_motos) == 0:
+					return render_template("registrar_vehiculo.html", placa_vehiculo = placa, check_carro = "checked", check_moto = "", check_bicicleta = "")
 
 				if len(data_carros) > 0:
 					return render_template("entrada_parqueadero.html", placa_carros = [data_carros, ingreso_carros])

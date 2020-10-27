@@ -10,14 +10,14 @@
 	<br>
 	<br>
 	<div>
-		<input type="radio" name="rb_carro" id="rb_carro" value="carro">
+		<input type="radio" name="rb_vehiculo" id="rb_carro" value="carro" {{check_carro}} onclick="show_carro();">
 		<label for="carro">Carro</label>
-		<input type="radio" name="rb_moto" id="rb_moto" value="moto">
+		<input type="radio" name="rb_vehiculo" id="rb_moto" value="moto" {{check_moto}} onclick="show_moto();">
 		<label for="moto">Moto</label>
-		<input type="radio" name="rb_bicicleta" id="rb_bicicleta" value="bicicleta">
+		<input type="radio" name="rb_vehiculo" id="rb_bicicleta" value="bicicleta" {{check_bicicleta}} onclick="show_bicicleta();">
 		<label for="bicicleta">Bicicleta</label>
 	</div>
-	<div>
+	<div id="panel_carro" style="display:none;">
 		<label for="">Placa</label>
 		<input type="text" name="placa_carro">
 		<br>
@@ -28,7 +28,7 @@
 		<input type="text" name="puertas">
 	</div>
 	<br>
-	<div>
+	<div id="panel_moto" style="display:none;">
 		<label for="">Placa</label>
 		<input type="text" name="placa_moto">
 		<br>
@@ -39,9 +39,9 @@
 		<input type="text" name="tiempos">
 	</div>
 	<br>
-	<div>
+	<div onload="myload()">
 		<label for="img">Foto</label>
-		<input type="file" name="foto" id="img" name="foto" accept="image/*" onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])">
+		<input type="file" name="foto" id="img" accept="image/*" onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])">
 		<img id="preview" src="" alt="" width="160" height="90">
 	</div>
 	<br>

@@ -5,6 +5,7 @@
 <form action="/generar_informe" method="POST" id="informe">
 	<label for="">Documento</label>
 	<input type="number" name="documento">
+	<br>
 	<label for="year">Seleccione el año:</label>
 	<input type="number" id="year" name="year" min="{{ years.0 }}" max="{{ years.1 }}" class="form-control"><br><br>
 	<label for="year">Seleccione el mes:</label>
@@ -21,7 +22,7 @@
 
 {% if data_info is defined and data_info|length > 0 %}
 <h3>Informe</h3>
-<table class="table table-hover">
+<table class="table table-hover table-bordered">
 	<thead>
 		<tr>
 			<th>Documento</th>

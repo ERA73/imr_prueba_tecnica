@@ -22,7 +22,7 @@
 	<div id="lista">
 		{% if usuario_carros is defined and usuario_carros.0|length > 0 %}
 		<h3>Carros</h3>
-		<table class="table table-hover">
+		<table class="table table-hover table-bordered">
 			<thead>
 				<tr>
 					<th>Placa</th>
@@ -39,7 +39,7 @@
 					<td>{{ carro.2 }}</td>
 					<td>{{ carro.3 }}</td>
 					<td>{{ carro.4 }}</td>
-					<td>--{{loop.index-1}}--
+					<td>
 						{% if usuario_carros.1[loop.index-1]|length > 0 and usuario_carros.1[loop.index-1][2] == "" %}
 							<a href="/salida_parqueadero?ve={{carro.0}}&ty=c&cel={{usuario_carros.1[loop.index-1][6]}}" class="btn btn-warning">Salida</a>
 						{% else %}
@@ -53,7 +53,7 @@
 		{% endif %}
 		{% if usuario_motos is defined and usuario_motos.0|length >0 %}
 		<h3>Motos</h3>
-		<table class="table table-hover">
+		<table class="table table-hover table-bordered">
 			<thead>
 				<tr>
 					<th>Placa</th>
@@ -70,7 +70,7 @@
 					<td>{{ moto.2 }}</td>
 					<td>{{ moto.3 }}</td>
 					<td>{{ moto.4 }}</td>
-					<td>--{{loop.index-1}}--
+					<td>
 						{% if usuario_motos.1[loop.index-1]|length > 0 and usuario_motos.1[loop.index-1][2] == "" %}
 							<a href="/salida_parqueadero?ve={{moto.0}}&ty=m&cel={{usuario_motos.1[loop.index-1][6]}}" class="btn btn-warning">Salida</a>
 						{% else %}
@@ -84,7 +84,7 @@
 		{% endif %}
 		{% if usuario_bicicletas is defined and usuario_bicicletas.0|length >0 %}
 		<h3>Bicicletas</h3>
-		<table class="table table-hover">
+		<table class="table table-hover table-bordered">
 			<thead>
 				<tr>
 					<th>Numero</th>
@@ -97,7 +97,7 @@
 				<tr>
 					<td>{{ bicicleta.0 }}</td>
 					<td>{{ bicicleta.1 }}</td>
-					<td>--{{loop.index-1}}--
+					<td>
 						{% if usuario_bicicletas.1[loop.index-1]|length > 0 and usuario_bicicletas.1[loop.index-1][2] == "" %}
 							<a href="/salida_parqueadero?ve={{bicicleta.0}}&ty=b&cel={{usuario_bicicletas.1[loop.index-1][6]}}" class="btn btn-warning">Salida</a>
 						{% else %}
@@ -141,7 +141,7 @@
 					<td>{{ carro.2 }}</td>
 					<td>{{ carro.3 }}</td>
 					<td>{{ carro.4 }}</td>
-					<td>--{{loop.index-1}}--
+					<td>
 						{% if placa_carros.1[loop.index-1]|length > 0 and placa_carros.1[loop.index-1][2] == "" %}
 							<a href="/salida_parqueadero?ve={{carro.0}}&ty=c" class="btn btn-warning">Salida</a>
 						{% else %}
@@ -172,7 +172,7 @@
 					<td>{{ moto.2 }}</td>
 					<td>{{ moto.3 }}</td>
 					<td>{{ moto.4 }}</td>
-					<td>--{{loop.index-1}}--
+					<td>
 						{% if placa_motos.1[loop.index-1]|length > 0 and placa_motos.1[loop.index-1][2] == "" %}
 							<a href="/salida_parqueadero?ve={{moto.0}}&ty=m" class="btn btn-warning">Salida</a>
 						{% else %}
