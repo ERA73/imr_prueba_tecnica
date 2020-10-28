@@ -1,12 +1,14 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
-from flask_mysqldb import MySQL
-from datetime import datetime
-from dao import *
+import os
 import traceback
 import base64
+from flask import Flask, render_template, request, redirect, url_for, flash
+from flask_mysqldb import MySQL
+from werkzeug.utils import secure_filename
+from datetime import datetime
+from dao import *
 
-#UPLOAD_FOLDER = '/uploadedfiles/images'
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+UPLOAD_FOLDER = 'static/uploads'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
@@ -19,7 +21,7 @@ app.config['MYSQL_DB'] = 'parqueadero'
 mysql = MySQL(app)
 
 # Archivos
-#app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 #settings
 app.secret_key = "mysecretkey"
@@ -34,7 +36,8 @@ def defaul():
 		return render_template("index.html")
 	except:
 		traceback.print_exc()
-		return "<p>Error inesperado, sentimos las molestias</p>"
+		flash('Error inesperado, sentimos las molestias')
+		return render_template("index.html")
 
 @app.route('/index')
 def index():
@@ -42,7 +45,8 @@ def index():
 		return redirect(url_for('defaul'))
 	except:
 		traceback.print_exc()
-		return "<p>Error inesperado, sentimos las molestias</p>"
+		flash('Error inesperado, sentimos las molestias')
+		return redirect(url_for('defaul'))
 
 @app.route('/enrutar', methods = ['POST'])
 def enrutar():
@@ -59,7 +63,8 @@ def enrutar():
 				return redirect(url_for('informes_form'))
 	except:
 		traceback.print_exc()
-		return "<p>Error inesperado, sentimos las molestias</p>"
+		flash('Error inesperado, sentimos las molestias')
+		return redirect(url_for('defaul'))
 
 @app.route('/crear_usuario_form')
 def crear_usuario_form():
@@ -70,7 +75,8 @@ def crear_usuario_form():
 		return render_template("crear_usuario.html", usuarios = data)
 	except:
 		traceback.print_exc()
-		return "<p>Error inesperado, sentimos las molestias</p>"
+		flash('Error inesperado, sentimos las molestias')
+		return redirect(url_for('defaul'))
 
 @app.route('/registrar_vehiculo_form')
 def registrar_vehiculo_form():
@@ -78,7 +84,8 @@ def registrar_vehiculo_form():
 		return render_template("registrar_vehiculo.html", placa_vehiculo = "", check_carro = "", check_moto = "", check_bicicleta = "checked")
 	except:
 		traceback.print_exc()
-		return "<p>Error inesperado, sentimos las molestias</p>"
+		flash('Error inesperado, sentimos las molestias')
+		return redirect(url_for('defaul'))
 
 @app.route('/entrada_parqueadero_form')
 def entrada_parqueadero_form():
@@ -86,7 +93,8 @@ def entrada_parqueadero_form():
 		return render_template("entrada_parqueadero.html")
 	except:
 		traceback.print_exc()
-		return "<p>Error inesperado, sentimos las molestias</p>"
+		flash('Error inesperado, sentimos las molestias')
+		return redirect(url_for('defaul'))
 
 def get_fecha():
 	today = datetime.today()
@@ -101,7 +109,8 @@ def informes_form():
 		return render_template("informes.html", years = fecha[0], months = fecha[1])
 	except:
 		traceback.print_exc()
-		return "<p>Error inesperado, sentimos las molestias</p>"
+		flash('Error inesperado, sentimos las molestias')
+		return redirect(url_for('defaul'))
 
 def get_documentos(documento = ""):
 	try:
@@ -166,7 +175,8 @@ def generar_informe():
 			return render_template("informes.html", years = fecha[0], months = fecha[1], data_info = data_info)
 	except:
 		traceback.print_exc()
-		return "<p>Error inesperado, sentimos las molestias</p>"
+		flash('Error inesperado, sentimos las molestias')
+		return redirect(url_for('defaul'))
 
 @app.route('/crear_usuario', methods = ['POST'])
 def crear_usuario():
@@ -185,9 +195,14 @@ def crear_usuario():
 			return redirect(url_for('crear_usuario_form'))
 	except:
 		traceback.print_exc()
-		return "<p>Error inesperado, sentimos las molestias</p>"
+		flash('Error inesperado, sentimos las molestias')
+		return redirect(url_for('defaul'))
 
-@app.route('/registrar_vehiculo', methods = ['POST'])
+def allowed_file(filename):
+	return '.' in filename and \
+		filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route('/registrar_vehiculo', methods = ['GET','POST'])
 def registrar_vehiculo():
 	try:
 		if request.method == 'POST':
@@ -201,10 +216,17 @@ def registrar_vehiculo():
 			#if 'foto' not in request.files:
 			#	flash('no se puede cargar el archibo')
 			#	return redirect(request.url)
-			foto = ""#request.files['foto']
-			print(type(foto))
-			print(foto)
-			#print(base64.b64encode(foto))
+			foto = request.files['foto']
+			if foto.filename == '':
+				foto = ""
+			if foto and allowed_file(foto.filename):
+				filename = secure_filename(foto.filename)
+				print("my_path")
+				print(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+				foto.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+				foto = filename
+				print("filename:")
+			print(len(foto))
 			cur = mysql.connection.cursor()
 			if option == "carro":
 				placa_carro = request.form['placa_carro']
@@ -233,7 +255,8 @@ def registrar_vehiculo():
 			return redirect(url_for('registrar_vehiculo_form'))
 	except:
 		traceback.print_exc()
-		return "<p>Error inesperado, sentimos las molestias</p>"
+		flash('Error inesperado, sentimos las molestias')
+		return redirect(url_for('defaul'))
 
 @app.route('/buscar_usuario', methods = ['POST'])
 def buscar_usuario():
@@ -263,11 +286,17 @@ def buscar_usuario():
 				ingreso_bicicletas = []
 				for data_bicicleta in data_bicicletas:
 					ingreso_bicicletas.append(datos_parqueadero("bicicleta", data_bicicleta[0]))
+				"""print(data_bicicletas)
+				for data_bicicleta in data_bicicletas:
+					print(data_bicicleta)
+					data_bicicleta[1] = "" if data_bicicleta[1] == "" else url_for('uploads/', filename=data_bicicleta[1])"""
+				
 
 				return render_template("entrada_parqueadero.html", usuario_carros = [data_carros, ingreso_carros], usuario_motos = [data_motos, ingreso_motos], usuario_bicicletas = [data_bicicletas, ingreso_bicicletas])
 	except:
 		traceback.print_exc()
-		return "<p>Error inesperado, sentimos las molestias</p>"
+		flash('Error inesperado, sentimos las molestias')
+		return redirect(url_for('defaul'))
 
 @app.route('/buscar_vehiculo', methods = ['POST'])
 def buscar_vehiculo():
@@ -302,7 +331,8 @@ def buscar_vehiculo():
 					return render_template("entrada_parqueadero.html", placa_motos = [data_motos, ingreso_motos])
 	except:
 		traceback.print_exc()
-		return "<p>Error inesperado, sentimos las molestias</p>"
+		flash('Error inesperado, sentimos las molestias')
+		return redirect(url_for('defaul'))
 
 @app.route('/entrada_parqueadero')
 def entrada_parqueadero():
@@ -329,7 +359,8 @@ def entrada_parqueadero():
 			return render_template("entrada_parqueadero.html")
 	except:
 		traceback.print_exc()
-		return "<p>Error inesperado, sentimos las molestias</p>"
+		flash('Error inesperado, sentimos las molestias')
+		return redirect(url_for('defaul'))
 
 @app.route('/salida_parqueadero')
 def salida_parqueadero():
@@ -352,7 +383,8 @@ def salida_parqueadero():
 		return render_template("entrada_parqueadero.html")
 	except:
 		traceback.print_exc()
-		return "<p>Error inesperado, sentimos las molestias</p>"
+		flash('Error inesperado, sentimos las molestias')
+		return redirect(url_for('defaul'))
 
 def hay_celdas_libres(tipo):
 	try:
@@ -378,9 +410,9 @@ def datos_parqueadero(tipo, id):
 	try:
 		cur = mysql.connection.cursor()
 		cur.execute('SELECT consecutivo, fecha_entrada, IFNULL(fecha_salida, ""), id_carro, id_moto, id_bicicleta, id_celda FROM entrada WHERE id_{} = {} order by fecha_entrada desc'.format(tipo, id))
-		celdas = list(cur.fetchall())[0]
+		celdas = cur.fetchall()
 		if len(celdas)>0:
-			return celdas
+			return list(celdas)
 		else:
 			return []
 	except:

@@ -38,7 +38,7 @@
 					<td>{{ carro.1 }}</td>
 					<td>{{ carro.2 }}</td>
 					<td>{{ carro.3 }}</td>
-					<td>{{ carro.4 }}</td>
+					<td><img src="/static/uploads/{{ carro.4 }}" alt="" width="160" height="90"></td>
 					<td>
 						{% if usuario_carros.1[loop.index-1]|length > 0 and usuario_carros.1[loop.index-1][2] == "" %}
 							<a href="/salida_parqueadero?ve={{carro.0}}&ty=c&cel={{usuario_carros.1[loop.index-1][6]}}" class="btn btn-warning">Salida</a>
@@ -69,7 +69,7 @@
 					<td>{{ moto.1 }}</td>
 					<td>{{ moto.2 }}</td>
 					<td>{{ moto.3 }}</td>
-					<td>{{ moto.4 }}</td>
+					<td><img src="/static/uploads/{{ moto.4 }}" alt="" width="160" height="90"></td>
 					<td>
 						{% if usuario_motos.1[loop.index-1]|length > 0 and usuario_motos.1[loop.index-1][2] == "" %}
 							<a href="/salida_parqueadero?ve={{moto.0}}&ty=m&cel={{usuario_motos.1[loop.index-1][6]}}" class="btn btn-warning">Salida</a>
@@ -96,7 +96,7 @@
 				{% for bicicleta in usuario_bicicletas.0 %}
 				<tr>
 					<td>{{ bicicleta.0 }}</td>
-					<td>{{ bicicleta.1 }}</td>
+					<td><img src="/static/uploads/{{bicicleta.1}}" alt="" width="160" height="90"></td>
 					<td>
 						{% if usuario_bicicletas.1[loop.index-1]|length > 0 and usuario_bicicletas.1[loop.index-1][2] == "" %}
 							<a href="/salida_parqueadero?ve={{bicicleta.0}}&ty=b&cel={{usuario_bicicletas.1[loop.index-1][6]}}" class="btn btn-warning">Salida</a>
@@ -140,7 +140,7 @@
 					<td>{{ carro.1 }}</td>
 					<td>{{ carro.2 }}</td>
 					<td>{{ carro.3 }}</td>
-					<td>{{ carro.4 }}</td>
+					<td><img src="/static/uploads/{{ carro.4 }}" alt="" width="160" height="90"></td>
 					<td>
 						{% if placa_carros.1[loop.index-1]|length > 0 and placa_carros.1[loop.index-1][2] == "" %}
 							<a href="/salida_parqueadero?ve={{carro.0}}&ty=c&cel={{placa_carros.1[loop.index-1][6]}}" class="btn btn-warning">Salida</a>
@@ -171,7 +171,7 @@
 					<td>{{ moto.1 }}</td>
 					<td>{{ moto.2 }}</td>
 					<td>{{ moto.3 }}</td>
-					<td>{{ moto.4 }}</td>
+					<td><img src="/static/uploads/{{ moto.4 }}" alt="" width="160" height="90"></td>
 					<td>
 						{% if placa_motos.1[loop.index-1]|length > 0 and placa_motos.1[loop.index-1][2] == "" %}
 							<a href="/salida_parqueadero?ve={{moto.0}}&ty=m&cel={{placa_motos.1[loop.index-1][6]}}" class="btn btn-warning">Salida</a>
