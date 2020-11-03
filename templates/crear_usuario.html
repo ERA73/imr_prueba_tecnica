@@ -4,18 +4,25 @@
 <h2>Crear Usuario</h2>
 
 <hr>
-<form action="/crear_usuario" method="POST">
-	<label for="">Documento</label>
-	<input type="number" name="documento" placeholder="documento">
-	<br>
-	<label for="">Nombres</label>
-	<input type="text" name="nombres" placeholder="nombres">
-	<br>
-	<label for="">Apellidos</label>
-	<input type="text" name="apellidos" placeholder="apellidos">
-	<br>
-	<button type="submit" name="crear_usuario" class="btn btn-success">
-		Crear
-	</button>
-</form>
+	<div class="card card-body">
+		<form action="/crear_usuario" method="POST">
+			<div class="form-group">
+				<label for="">Escriba el documento del usuario:</label>
+				<input type="number" name="documento" placeholder="Ej: 1234567890" class="form-control">
+			</div>
+			<div class="form-group">
+				<label for="">Escriba el nombre del usuario:</label>
+				<input type="text" name="nombres" placeholder="Ej: Menganito" class="form-control">
+			</div>
+			<div class="form-group">
+				<label for="">Escriba los apellidos del usuario:</label>
+				<input type="text" name="apellidos" placeholder="Ej: Gomez" class="form-control">
+			</div>
+			<div class="form-group">
+				<button type="submit" name="crear_usuario" class="btn btn-success btn-block">
+					Crear
+				</button>
+			</div>
+		</form>
+	</div>
 {% endblock %}

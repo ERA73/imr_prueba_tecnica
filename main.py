@@ -100,13 +100,15 @@ def get_fecha():
 	today = datetime.today()
 	years = [2000, today.year]
 	months = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"]
-	return [years, months]
+	months = [m.capitalize() for m in months]
+	current = [today.year, months[today.month-1]]
+	return [years, months, current]
 
 @app.route('/informes_form')
 def informes_form():
 	try:
 		fecha = get_fecha()
-		return render_template("informes.html", years = fecha[0], months = fecha[1])
+		return render_template("informes.html", years = fecha[0], months = fecha[1], current = fecha[2])
 	except:
 		traceback.print_exc()
 		flash('Error inesperado, sentimos las molestias')

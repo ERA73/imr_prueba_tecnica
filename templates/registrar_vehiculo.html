@@ -4,52 +4,60 @@
 <h2>Registrar Vehículo</h2>
 
 <hr>
-<form action="/registrar_vehiculo" method="POST" enctype="multipart/form-data">
-	<label for="">Documento</label>
-	<input type="number" name="documento">
-	<br>
-	<br>
-	<div>
-		<input type="radio" name="rb_vehiculo" id="rb_carro" value="carro" {{check_carro}} onclick="show_carro();">
-		<label for="carro">Carro</label>
-		<input type="radio" name="rb_vehiculo" id="rb_moto" value="moto" {{check_moto}} onclick="show_moto();">
-		<label for="moto">Moto</label>
-		<input type="radio" name="rb_vehiculo" id="rb_bicicleta" value="bicicleta" {{check_bicicleta}} onclick="show_bicicleta();">
-		<label for="bicicleta">Bicicleta</label>
-	</div>
-	<div id="panel_carro" style="display:none;">
-		<label for="">Placa</label>
-		<input type="text" name="placa_carro" value="{{ placa_vehiculo }}">
-		<br>
-		<label for="">Modelo</label>
-		<input type="text" name="modelo">
-		<br>
-		<label for=""># Puertas</label>
-		<input type="text" name="puertas">
-	</div>
-	<br>
-	<div id="panel_moto" style="display:none;">
-		<label for="">Placa</label>
-		<input type="text" name="placa_moto" value="{{ placa_vehiculo }}">
-		<br>
-		<label for="">Cilindraje</label>
-		<input type="text" name="cilindraje">
-		<br>
-		<label for="">Tiempos</label>
-		<input type="text" name="tiempos">
-	</div>
-	<br>
-	<div onload="myload()">
-		<label for="img">Foto</label>
-		<input type="file" name="foto" id="foto" accept="image/*" onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])">
-		<img id="preview" src="" alt="" width="160" height="90">
-	</div>
-	<br>
-	<br>
-	<div>
-		<button type="submit" name="registrar_vehiculo" class="btn btn-success">
-			Registrar
-		</button>
-	</div>
-</form>
+<div class="card card-body">
+	<form action="/registrar_vehiculo" method="POST" enctype="multipart/form-data">
+		<div class="form-group">
+			<label for="">Escriba el documento del usuario:</label>
+			<input type="number" name="documento" placeholder="Ej: 1234567890" class="form-control">
+		</div>
+		<div class="form-group">
+			<input type="radio" name="rb_vehiculo" id="rb_carro" value="carro" {{check_carro}} onclick="show_carro();">
+			<label for="carro">Carro</label>
+			<input type="radio" name="rb_vehiculo" id="rb_moto" value="moto" {{check_moto}} onclick="show_moto();">
+			<label for="moto">Moto</label>
+			<input type="radio" name="rb_vehiculo" id="rb_bicicleta" value="bicicleta" {{check_bicicleta}} onclick="show_bicicleta();">
+			<label for="bicicleta">Bicicleta</label>
+		</div>
+		<div id="panel_carro" style="display:none;" class="card card-body">
+			<div class="form-group">
+				<label for="">Placa</label>
+				<input type="text" name="placa_carro" value="{{ placa_vehiculo }}" class="form-control">
+			</div>
+			<div class="form-group">
+				<label for="">Modelo</label>
+				<input type="text" name="modelo" class="form-control">
+			</div>
+			<div class="form-group">
+				<label for=""># Puertas</label>
+				<input type="text" name="puertas" class="form-control">
+			</div>
+		</div>
+		<div id="panel_moto" style="display:none;" class="card card-body">
+			<div class="form-group">
+				<label for="">Placa</label>
+				<input type="text" name="placa_moto" value="{{ placa_vehiculo }}" class="form-control">
+			</div>
+			<div class="form-group">
+				<label for="">Cilindraje</label>
+				<input type="text" name="cilindraje" class="form-control">
+			</div>
+			<div class="form-group">
+				<label for="">Tiempos</label>
+				<input type="text" name="tiempos" class="form-control">
+			</div>
+		</div>
+		<div onload="myload()" class="form-group">
+			<div class="form-group">
+				<label for="img">Foto</label>
+				<input type="file" name="foto" id="foto" accept="image/*" onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])">
+				<img id="preview" src="" alt="" width="160" height="90">
+			</div>
+		</div>
+		<div class="form-group">
+			<button type="submit" name="registrar_vehiculo" class="btn btn-success btn-block">
+				Registrar
+			</button>
+		</div>
+	</form>
+</div>
 {% endblock %}

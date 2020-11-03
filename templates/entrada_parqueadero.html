@@ -12,17 +12,23 @@
 
 <hr>
 <div>
-	<form action="/buscar_usuario" method="POST">
-		<label for="documento">Documento</label>
-		<input type="number" name="documento" id="documento" placeholder="documento">
-		<button type="submit" name="buscar_usuario">
-			Buscar
-		</button>
-	</form>
+	<div class="card card-body">
+		<form action="/buscar_usuario" method="POST">
+			<div class="form-group">
+				<label for="documento">Escriba el documento del usuario:</label>
+				<input type="number" name="documento" id="documento" placeholder="Ej: 1234567890" class="form-control">
+			</div>
+			<div class="form-group">
+				<button type="submit" name="buscar_usuario" class="btn btn-success btn-block">
+					Buscar
+				</button>
+			</div>
+		</form>
+	</div>
 	<div id="lista">
 		{% if usuario_carros is defined and usuario_carros.0|length > 0 %}
 		<h3>Carros</h3>
-		<table class="table table-hover table-bordered">
+		<table class="table table-hover table-striped table-bordered bg-white table-sm bg-white table-sm">
 			<thead>
 				<tr>
 					<th>Placa</th>
@@ -53,7 +59,7 @@
 		{% endif %}
 		{% if usuario_motos is defined and usuario_motos.0|length >0 %}
 		<h3>Motos</h3>
-		<table class="table table-hover table-bordered">
+		<table class="table table-hover table-striped table-bordered bg-white table-sm">
 			<thead>
 				<tr>
 					<th>Placa</th>
@@ -84,7 +90,7 @@
 		{% endif %}
 		{% if usuario_bicicletas is defined and usuario_bicicletas.0|length >0 %}
 		<h3>Bicicletas</h3>
-		<table class="table table-hover table-bordered">
+		<table class="table table-hover table-striped table-bordered bg-white table-sm">
 			<thead>
 				<tr>
 					<th>Numero</th>
@@ -114,17 +120,23 @@
 <br>
 <hr>
 <div>
-	<form action="/buscar_vehiculo" method="POST">
-		<label for="placa">Placa</label>
-		<input type="text" name="placa" id="placa" placeholder="placa">
-		<button type="submit" name="buscar_vehiculo">
-			Buscar
-		</button>
-	</form>
+	<div class="card card-body">
+		<form action="/buscar_vehiculo" method="POST">
+			<div class="form-group">
+				<label for="placa">Escriba la placa del vehículo:</label>
+				<input type="text" name="placa" id="placa" placeholder="Ej: abc123" class="form-control">
+			</div>
+			<div class="form-group">
+				<button type="submit" name="buscar_vehiculo" class="btn btn-success btn-block">
+					Buscar
+				</button>
+			</div>
+		</form>
+	</div>
 	<div id="vehiculo">
 		{% if placa_carros is defined and placa_carros.0|length > 0 %}
 		<h3>Carro</h3>
-		<table class="table table-hover">
+		<table class="table table-hover table-striped table-bordered bg-white table-sm">
 			<thead>
 				<tr>
 					<th>Placa</th>
@@ -155,7 +167,7 @@
 		{% endif %}
 		{% if placa_motos is defined and placa_motos.0|length > 0 %}
 		<h3>Moto</h3>
-		<table class="table table-hover">
+		<table class="table table-hover table-striped table-bordered bg-white table-sm">
 			<thead>
 				<tr>
 					<th>Placa</th>
