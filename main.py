@@ -6,29 +6,29 @@ from flask_mysqldb import MySQL
 from werkzeug.utils import secure_filename
 from datetime import datetime
 from dao import *
+import app_config_parameters as acp
 
-UPLOAD_FOLDER = 'static/uploads'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+
 
 app = Flask(__name__)
-app.config['TEMPLATES_AUTO_RELOAD'] = True
+app.config['TEMPLATES_AUTO_RELOAD'] = acp.TEMPLATES_AUTO_RELOAD
 
 # MySQL connection
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'admin'
-app.config['MYSQL_DB'] = 'parqueadero'
+app.config['MYSQL_HOST'] = acp.MYSQL_HOST
+app.config['MYSQL_USER'] = acp.MYSQL_USER
+app.config['MYSQL_PASSWORD'] = acp.MYSQL_PASSWORD
+app.config['MYSQL_DB'] = acp.MYSQL_DB
 mysql = MySQL(app)
 
 # Archivos
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['UPLOAD_FOLDER'] = acp.UPLOAD_FOLDER
 
 #settings
-app.secret_key = "mysecretkey"
+app.secret_key = acp.secret_key
 
 def allowed_file(filename):
     return '.' in filename and \
-        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+        filename.rsplit('.', 1)[1].lower() in acp.ALLOWED_EXTENSIONS
 
 @app.route('/')
 def defaul():
@@ -96,11 +96,15 @@ def entrada_parqueadero_form():
 		flash('Error inesperado, sentimos las molestias')
 		return redirect(url_for('defaul'))
 
+def get_months():
+	months = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"]
+	months = [m.capitalize() for m in months]
+	return months
+
 def get_fecha():
 	today = datetime.today()
 	years = [2000, today.year]
-	months = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"]
-	months = [m.capitalize() for m in months]
+	months = get_months()
 	current = [today.year, months[today.month-1]]
 	return [years, months, current]
 
@@ -142,6 +146,7 @@ def generar_informe():
 			documento = request.form['documento']
 			year = request.form['year']
 			month = request.form['month']
+			current = [year, get_months()[int(month)-1]]
 			if year == "":
 				flash('Debe escribir un año')
 				return redirect(url_for('informes_form'))
@@ -174,7 +179,7 @@ def generar_informe():
 				data_info.append([doc[0], nombre, data_carro, data_moto, data_bicicleta, data_total])
 			if len(data_info) == 0:
 				flash('No hay resultados para mostrar')
-			return render_template("informes.html", years = fecha[0], months = fecha[1], data_info = data_info)
+			return render_template("informes.html", years = fecha[0], months = fecha[1], data_info = data_info, current = current)
 	except:
 		traceback.print_exc()
 		flash('Error inesperado, sentimos las molestias')
@@ -202,7 +207,7 @@ def crear_usuario():
 
 def allowed_file(filename):
 	return '.' in filename and \
-		filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+		filename.rsplit('.', 1)[1].lower() in acp.ALLOWED_EXTENSIONS
 
 @app.route('/registrar_vehiculo', methods = ['GET','POST'])
 def registrar_vehiculo():

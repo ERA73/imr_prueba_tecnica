@@ -2,13 +2,13 @@
 
 {% block body %}
 <h2>Informe mensual de uso del parqueadero</h2>
-<div class="card card-body">
+<div class="card card-body col-md-4 offset-md-4">
 	<form action="/generar_informe" method="POST" id="informe">
 		<label for="">Escriba el documento del usuario:</label>
 		<input type="number" name="documento" placeholder="Ej: 1234567890" class="form-control">
 		<br>
 		<label for="year">Seleccione el año:</label>
-		<input type="number" id="year" name="year" min="{{ years.0 }}" max="{{ years.1 }}" class="form-control" placeholder="{{ current.0 }}"><br><br>
+		<input type="number" id="year" name="year" min="{{ years.0 }}" max="{{ years.1 }}" class="form-control" placeholder="{{ current.0 }}" value="{{ current.0 }}"><br><br>
 		<label for="year">Seleccione el mes:</label>
 		<select id="month" name="month" class="form-control" form="informe" >
 			{% for month in months %}
@@ -20,11 +20,11 @@
 			{% endfor %}
 		</select>
 	</form>
+	<button type="submit" name="generar_informe" class="btn btn-success btn-block" form="informe">
+		Generar Informe
+	</button>
 </div>
 <br>
-<button type="submit" name="generar_informe" class="btn btn-success btn-block" form="informe">
-	Generar Informe
-</button>
 
 {% if data_info is defined and data_info|length > 0 %}
 <h3>Informe</h3>
