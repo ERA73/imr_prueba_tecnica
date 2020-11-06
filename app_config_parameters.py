@@ -12,3 +12,6 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 #settings
 secret_key = "mysecretkey"
+
+#server
+server_host = 'localhost'
